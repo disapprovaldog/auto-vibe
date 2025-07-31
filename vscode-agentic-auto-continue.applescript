@@ -108,6 +108,3 @@ on run
     
     return "VSCode Agentic Auto-Continue script executed"
 end run
-
--- For manual execution
-my checkAndContinueVSCode()

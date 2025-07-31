@@ -19,15 +19,7 @@ show_help() {
     echo "  -w, --watch          Run AppleScript in watch mode (every 30 seconds)"
     echo "  -s, --stop           Stop any running watch processes"
     echo "  --reload-hs          Force reload Hammerspoon configuration"
-    echo "  --test-hs            Test Hammerspoon script manually (with debug output)"
-    echo "  --test-patterns      Test pattern matching with sample titles"
     echo "  --help               Show this help message"
-    echo ""
-    echo "Hammerspoon Hotkeys (when installed):"
-    echo "  Ctrl+Alt+Cmd+T       Trigger manual test with debug output"
-    echo "  Ctrl+Alt+Cmd+P       Test pattern matching with sample titles"
-    echo "  Ctrl+Alt+Cmd+S       Start monitoring mode"
-    echo "  Ctrl+Alt+Cmd+X       Stop monitoring mode"
     echo ""
     echo "Examples:"
     echo "  $0                   # Run once with AppleScript"
@@ -132,63 +124,6 @@ stop_watch_mode() {
     pkill -f "vscode-agentic-auto-continue.applescript" && echo "Killed running AppleScript instances"
 }
 
-test_hammerspoon() {
-    echo "Testing Hammerspoon script manually..."
-    echo "This will run the detection and continue logic once with debug output."
-    echo ""
-    echo "Method 1: Hotkey Test"
-    echo "Press Ctrl+Alt+Cmd+T to run the test manually"
-    echo "Then check the Hammerspoon console for output."
-    echo ""
-    echo "Method 2: AppleScript Test"
-    echo "Attempting to run via AppleScript..."
-    
-    # Try the AppleScript method
-    if osascript -e 'tell application "Hammerspoon" to execute lua code "local module = require(\"vscode-agentic-auto-continue\"); module.triggerNow()"' 2>/dev/null; then
-        echo "✓ AppleScript test executed successfully!"
-    else
-        echo "⚠ AppleScript method failed. Using hotkey method instead."
-        echo ""
-        echo "Please:"
-        echo "1. Make sure Hammerspoon is running"
-        echo "2. Press Ctrl+Alt+Cmd+T to run the test"
-        echo "3. Open Hammerspoon console (click Hammerspoon menu → Console)"
-        echo "4. Look for the debug output showing all windows found"
-    fi
-    
-    echo ""
-    echo "The test will show:"
-    echo "- All windows currently open"
-    echo "- Which ones are detected as VSCode"
-    echo "- Which VSCode windows match agentic mode patterns"
-}
-
-test_patterns() {
-    echo "Testing pattern matching with sample window titles..."
-    echo "This will show which patterns would trigger the continue action."
-    echo ""
-    echo "Method 1: Hotkey Test"
-    echo "Press Ctrl+Alt+Cmd+P to test pattern matching"
-    echo ""
-    echo "Method 2: AppleScript Test"
-    echo "Attempting to run pattern test via AppleScript..."
-    
-    # Try the AppleScript method
-    if osascript -e 'tell application "Hammerspoon" to execute lua code "local module = require(\"vscode-agentic-auto-continue\"); module.triggerTest()"' 2>/dev/null; then
-        echo "✓ Pattern test executed successfully!"
-    else
-        echo "⚠ AppleScript method failed. Use hotkey method instead."
-        echo ""
-        echo "Press Ctrl+Alt+Cmd+P to test pattern matching"
-    fi
-    
-    echo ""
-    echo "Check Hammerspoon console for test results showing:"
-    echo "- Sample window titles"
-    echo "- Which patterns match"
-    echo "- Current real VSCode windows"
-}
-
 # Parse command line arguments
 case "${1:-}" in
     -a|--applescript|-r|--run)
@@ -205,12 +140,6 @@ case "${1:-}" in
         ;;
     --reload-hs)
         reload_hammerspoon
-        ;;
-    --test-hs)
-        test_hammerspoon
-        ;;
-    --test-patterns)
-        test_patterns
         ;;
     --help)
         show_help
